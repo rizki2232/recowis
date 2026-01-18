@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\UserCategoryController;
+use App\Http\Controllers\Api\categoryController;
 
 
 
@@ -32,5 +33,8 @@ Route::middleware('auth:sanctum')->get('/user/categories', [UserCategoryControll
 
 
 
+Route::get('/categories', [categoryController::class,'index']);
+
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login',[AuthController::class, 'login']);
+Route::post('/logout',[AuthController::class, 'logout']);

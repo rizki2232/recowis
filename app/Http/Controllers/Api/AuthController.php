@@ -7,6 +7,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
 {
@@ -55,29 +56,37 @@ class AuthController extends Controller
             ], 500);
         }
     }
-    public function login(Request $request)
-    {
-        $request->validate([
-            'login' => 'required',
-            'password'=>'required',
-        ]);
+ public function login(Request $request)
+{
+    $request->validate([
+        'login' => 'required',
+        'password' => 'required',
+    ]);
 
-        $user = user::where('email',$request->login)
-                    ->orWhere('username',$request->login)
-                    ->first();
+    $user = User::where('email', $request->login)
+        ->orWhere('username', $request->login)
+        ->first();
 
-        if(!$user || !Hash::check($request->password,$user->password)){
-            return response()->json([
-                'message'=>'username/email or password is incorrect'
-            ], 401);
-        }
+    if (!$user || !Hash::check($request->password, $user->password)) {
+        return response()->json(['message' => 'Login gagal'], 401);
+    }
 
-        $token = $user->createToken('auth_token')->plainTextToken;
+    Auth::login($user);
+
+    return response()->json([
+        'redirect' => $user->role === 'admin'
+            ? '/admin/dashboard'
+            : '/dashboard'
+    ]);
+}
+
+    public function logout(Request $request){
+        Auth::logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
 
         return response()->json([
-            'message'=>'login Berhasil',
-            'token'=> $token,
-            'user'=> $user
+            'message'=>'Logout Berhasil'
         ]);
     }
 }

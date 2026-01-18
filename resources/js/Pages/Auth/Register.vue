@@ -1,103 +1,74 @@
-<script setup>
-import GuestLayout from '@/Layouts/GuestLayout.vue';
-import InputError from '@/Components/InputError.vue';
-import InputLabel from '@/Components/InputLabel.vue';
-import PrimaryButton from '@/Components/PrimaryButton.vue';
-import TextInput from '@/Components/TextInput.vue';
-import { Head, Link, useForm } from '@inertiajs/vue3';
-
-const form = useForm({
-    name: '',
-    email: '',
-    password: '',
-    password_confirmation: '',
-});
-
-const submit = () => {
-    form.post(route('register'), {
-        onFinish: () => form.reset('password', 'password_confirmation'),
-    });
-};
-</script>
-
 <template>
-    <GuestLayout>
-        <Head title="Register" />
+  <v-container class="fill-height" fluid>
+    <v-row justify="center">
+      <v-col cols="12" md="6">
+        <v-card>
+          <v-card-title>Register</v-card-title>
 
-        <form @submit.prevent="submit">
-            <div>
-                <InputLabel for="name" value="Name" />
+          <v-card-text>
+            <v-text-field label="Nama Depan" v-model="form.first_name" />
+            <v-text-field label="Nama Belakang" v-model="form.last_name" />
+            <v-text-field label="Username" v-model="form.username" />
+            <v-text-field label="Email" v-model="form.email" />
+            <v-text-field label="Password" type="password" v-model="form.password" />
+            <v-text-field label="Konfirmasi Password" type="password" v-model="form.password_confirmation" />
 
-                <TextInput
-                    id="name"
-                    type="text"
-                    class="mt-1 block w-full"
-                    v-model="form.name"
-                    required
-                    autofocus
-                    autocomplete="name"
+            <v-checkbox
+                v-for="cat in categories"
+                :key="cat.id"
+                v-model="form.categories"
+                :label="cat.name"
+                :value="cat.id"
                 />
 
-                <InputError class="mt-2" :message="form.errors.name" />
-            </div>
+          </v-card-text>
 
-            <div class="mt-4">
-                <InputLabel for="email" value="Email" />
-
-                <TextInput
-                    id="email"
-                    type="email"
-                    class="mt-1 block w-full"
-                    v-model="form.email"
-                    required
-                    autocomplete="username"
-                />
-
-                <InputError class="mt-2" :message="form.errors.email" />
-            </div>
-
-            <div class="mt-4">
-                <InputLabel for="password" value="Password" />
-
-                <TextInput
-                    id="password"
-                    type="password"
-                    class="mt-1 block w-full"
-                    v-model="form.password"
-                    required
-                    autocomplete="new-password"
-                />
-
-                <InputError class="mt-2" :message="form.errors.password" />
-            </div>
-
-            <div class="mt-4">
-                <InputLabel for="password_confirmation" value="Confirm Password" />
-
-                <TextInput
-                    id="password_confirmation"
-                    type="password"
-                    class="mt-1 block w-full"
-                    v-model="form.password_confirmation"
-                    required
-                    autocomplete="new-password"
-                />
-
-                <InputError class="mt-2" :message="form.errors.password_confirmation" />
-            </div>
-
-            <div class="flex items-center justify-end mt-4">
-                <Link
-                    :href="route('login')"
-                    class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                >
-                    Already registered?
-                </Link>
-
-                <PrimaryButton class="ms-4" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
-                    Register
-                </PrimaryButton>
-            </div>
-        </form>
-    </GuestLayout>
+          <v-card-actions>
+            <v-btn color="primary" block @click="register">
+              Register
+            </v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-col>
+    </v-row>
+  </v-container>
 </template>
+
+<script setup>
+import { reactive, ref, onMounted } from 'vue'
+import axios from 'axios'
+
+const categories = ref([])
+
+const form = reactive({
+  first_name: '',
+  last_name: '',
+  username: '',
+  email: '',
+  password: '',
+  password_confirmation: '',
+  categories: [],
+})
+
+const fetchCategories = async () => {
+  try {
+    const res = await axios.get('/api/categories')
+    categories.value = res.data
+  } catch (e) {
+    console.error('Gagal ambil kategori')
+  }
+}
+
+onMounted(() => {
+  fetchCategories()
+})
+
+const register = async () => {
+  try {
+    await axios.post('/api/register', form)
+    window.location.href = '/login'
+  } catch (err) {
+    alert('Register gagal')
+  }
+}
+</script>

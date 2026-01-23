@@ -42,10 +42,9 @@ class AuthController extends Controller
 
             DB::commit();
 
-            return response()->json([
-                'message' => 'Register berhasil',
-                'user' => $user
-            ], 201);
+
+            return redirect()->route('login');
+
 
         } catch (\Exception $e) {
             DB::rollBack();
@@ -68,25 +67,29 @@ class AuthController extends Controller
         ->first();
 
     if (!$user || !Hash::check($request->password, $user->password)) {
-        return response()->json(['message' => 'Login gagal'], 401);
+        return back()->withErrors([
+            'login' => 'Username atau password salah',
+        ]);
     }
 
     Auth::login($user);
+    $request->session()->regenerate();
 
-    return response()->json([
-        'redirect' => $user->role === 'admin'
-            ? '/admin/dashboard'
-            : '/dashboard'
-    ]);
+    if ($user->role === 'admin') {
+        return redirect()->route('admin.dashboard');
+    }
+
+    return redirect()->route('dashboard');
 }
+
+
 
     public function logout(Request $request){
         Auth::logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        return response()->json([
-            'message'=>'Logout Berhasil'
-        ]);
+        return redirect()->route('login');
+
     }
 }

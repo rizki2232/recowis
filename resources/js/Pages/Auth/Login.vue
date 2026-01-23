@@ -1,31 +1,61 @@
 <template>
-  <v-container class="fill-height" fluid>
-    <v-row justify="center" align="center">
-      <v-col cols="12" md="4">
-        <v-card>
-          <v-card-title>Login</v-card-title>
+  <v-card class="elevation-4 pa-6" max-width="400" width="100%">
+    <!-- LOGO -->
+    <div class="d-flex align-center justify-center mb-6">
+      <v-img
+        src="/images/logo_dispora.png"
+        max-width="60"
+        class="mr-2"
+      />
+      <span class="text-body-1 font-weight-medium">
+        Disbudporapar
+      </span>
+    </div>
 
-          <v-card-text>
-            <v-text-field
-              label="Username"
-              v-model="form.login"
-            />
-            <v-text-field
-              label="Password"
-              type="password"
-              v-model="form.password"
-            />
-          </v-card-text>
+    <!-- USERNAME -->
+    <div class="mb-1 text-body-2 font-weight-medium">
+      Username
+    </div>
+    <v-text-field
+      density="compact"
+      variant="outlined"
+      placeholder="Masukkan username"
+      hide-details
+      v-model="form.login"
+    />
 
-          <v-card-actions>
-            <v-btn color="primary" block @click="login">
-              Login
-            </v-btn>
-          </v-card-actions>
-        </v-card>
-      </v-col>
-    </v-row>
-  </v-container>
+    <!-- PASSWORD -->
+    <div class="mt-4 mb-1 text-body-2 font-weight-medium">
+      Password
+    </div>
+    <v-text-field
+      density="compact"
+      variant="outlined"
+      type="password"
+      placeholder="Masukkan password"
+      hide-details
+      v-model="form.password"
+    />
+
+    <!-- BUTTON -->
+    <v-btn
+      class="mt-6"
+      color="blue"
+      variant="tonal"
+      block
+      @click="login"
+    >
+      Login
+    </v-btn>
+
+    <!-- LINK REGISTER -->
+    <div class="text-center mt-4 text-body-2">
+      Don't have an account?
+      <a href="#" @click.prevent="$emit('switch')">
+        Register here
+      </a>
+    </div>
+  </v-card>
 </template>
 
 <script setup>
@@ -41,7 +71,7 @@ const login = async () => {
   try {
     const res = await axios.post('/login', form)
     window.location.href = res.data.redirect
-  } catch (err) {
+  } catch {
     alert('Login gagal')
   }
 }

@@ -12,14 +12,23 @@ use Illuminate\Support\Facades\Auth;
 */
 
 
+
+
+
+
 Route::get('/test', fn () => Inertia::render('Auth/Login'));
 
 // ===================
 // GUEST
 // ===================
+// Route::middleware('guest')->group(function () {
+//     Route::get('/login', fn () => Inertia::render('Auth/Login'))->name('login');
+//     Route::get('/register', fn () => Inertia::render('Auth/Register'))->name('register');
+//     Route::post('/login', [AuthController::class, 'login']);
+// });
 Route::middleware('guest')->group(function () {
-    Route::get('/login', fn () => Inertia::render('Auth/Login'))->name('login');
-    Route::get('/register', fn () => Inertia::render('Auth/Register'))->name('register');
+    Route::get('/login', fn () => Inertia::render('Auth/Auth'))->name('login');
+    Route::get('/register', fn () => Inertia::render('Auth/Auth'))->name('register');
     Route::post('/login', [AuthController::class, 'login']);
 });
 

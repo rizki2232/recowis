@@ -7,6 +7,8 @@ import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers'
 
 import vuetify from './plugins/vuetify'
 
+import '@mdi/font/css/materialdesignicons.css'
+
 createInertiaApp({
   resolve: (name) =>
     resolvePageComponent(

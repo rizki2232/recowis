@@ -3,7 +3,9 @@
         <SidebarAdmin />
 
         <v-main>
-        <slot />
+            <v-container fluid class="pa-6">
+                <slot />
+            </v-container>
         </v-main>
 
     </v-app>

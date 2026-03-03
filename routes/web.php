@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use App\Http\Controllers\Api\AuthController;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\Admin\TouristSpotController;
 
 /*
 |--------------------------------------------------------------------------
@@ -64,3 +65,11 @@ Route::middleware('auth')->group(function () {
     })->middleware ('auth')->name('logout');
 
 });
+
+Route::middleware(['auth', 'role:admin'])
+    ->prefix('admin')
+    ->group(function () {
+        Route::get('/tourist-spot', [TouristSpotController::class, 'index']);
+        Route::post('/tourist-spot', [TouristSpotController::class, 'store']);
+        Route::delete('/tourist-spot/{touristSpot}', [TouristSpotController::class, 'destroy']);
+    });

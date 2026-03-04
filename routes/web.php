@@ -5,6 +5,8 @@ use Inertia\Inertia;
 use App\Http\Controllers\Api\AuthController;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Admin\TouristSpotController;
+use App\Http\Controllers\User\RecommendationController;
+use App\Models\TouristSpot;
 
 /*
 |--------------------------------------------------------------------------
@@ -39,10 +41,23 @@ Route::middleware('guest')->group(function () {
 Route::middleware('auth')->group(function () {
 
     // user
-    Route::get('/dashboard', fn () =>
-        Inertia::render('User/Dashboard')
-    )->middleware('role:user')->name('dashboard');
+    Route::get('/dashboard', function () {
 
+    $user = auth()->user();
+
+    // ambil kategori favorit user
+    $categoryIds = $user->categories->pluck('id');
+
+    // ambil wisata sesuai kategori
+    $recommendedSpots = TouristSpot::whereIn('category_id', $categoryIds)
+        ->with('category')
+        ->get();
+
+    return Inertia::render('User/Dashboard', [
+        'recommendedSpots' => $recommendedSpots
+    ]);
+
+})->middleware('role:user')->name('dashboard');
     // admin
     Route::get('/admin/dashboard', fn () =>
         Inertia::render('Admin/Dashboard')
@@ -69,7 +84,5 @@ Route::middleware('auth')->group(function () {
 Route::middleware(['auth', 'role:admin'])
     ->prefix('admin')
     ->group(function () {
-        Route::get('/tourist-spot', [TouristSpotController::class, 'index']);
-        Route::post('/tourist-spot', [TouristSpotController::class, 'store']);
-        Route::delete('/tourist-spot/{touristSpot}', [TouristSpotController::class, 'destroy']);
+        Route::resource('tourist-spot', TouristSpotController::class);
     });

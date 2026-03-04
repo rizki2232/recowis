@@ -43,6 +43,24 @@
       </v-col>
 
       </v-row>
+      <div>
+        <h2>Rekomendasi Untuk Anda</h2>
+
+        <div
+        v-for="spot in recommendedSpots"
+        :key="spot.id"
+        style="margin-bottom:20px;"
+        >
+        <img
+            v-if="spot.image"
+            :src="`/storage/${spot.image}`"
+            alt="gambar wisata"
+            width="200"
+        />
+
+        <h3>{{ spot.name }}</h3>
+        </div>
+    </div>
     </v-container>
   </section>
 </template>
@@ -52,8 +70,12 @@
 <script setup>
 import UserLayout from '@/Layouts/UserLayout.vue'
 defineOptions({ layout: UserLayout })
-
 import { ref, onMounted, onUnmounted } from 'vue'
+
+
+defineProps({
+  recommendedSpots: Array
+})
 
 const circleImages = ref([
   '/images/buaya.jpg',

@@ -29,7 +29,7 @@
       <v-list-item
         prepend-icon="mdi-map-marker"
         title="Wisata"
-        href="/admin/wisata"
+        href="/admin/tourist-spot"
       />
 
       <v-list-item

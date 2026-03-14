@@ -18,6 +18,7 @@
           <th>Nama</th>
           <th>Alamat</th>
           <th>Harga</th>
+          <th>Kategori</th>
           <th>Aksi</th>
         </tr>
       </thead>
@@ -26,6 +27,7 @@
           <td>{{ spot.name }}</td>
           <td>{{ spot.address }}</td>
           <td>{{ spot.ticket_price }}</td>
+          <td>{{ spot.category.name}}</td>
           <td class="d-flex gap-2">
 
             <!-- EDIT -->

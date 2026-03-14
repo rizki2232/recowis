@@ -1,0 +1,168 @@
+
+.hero-rotator {
+  position: relative;
+  width: 100%;
+  height: 420px;
+}
+
+/* TRANSISI HALUS */
+.hero-avatar {
+  position: absolute;
+  transition:
+    transform 0.8s cubic-bezier(0.4, 0, 0.2, 1),
+    opacity 0.8s ease;
+}
+
+/* POSISI NORMAL */
+.hero-avatar.main {
+  right: 60px;
+  top: 80px;
+  z-index: 3;
+  transform: scale(1);
+}
+
+.hero-avatar.top {
+  right: -20px;
+  top: 0;
+  z-index: 2;
+  transform: scale(0.85);
+  opacity: 0.8;
+}
+
+.hero-avatar.bottom {
+  right: -20px;
+  bottom: 0;
+  z-index: 1;
+  transform: scale(0.7);
+  opacity: 0.6;
+}
+
+/* === ANIMASI PERPINDAHAN POSISI === */
+
+/* TOP → MAIN */
+.to-main {
+  transform: translate(-80px, 140px) scale(1);
+  opacity: 1;
+  z-index: 4;
+}
+
+/* MAIN → BOTTOM */
+.to-bottom {
+  transform: translate(40px, 200px) scale(0.7);
+  opacity: 0.6;
+  z-index: 1;
+}
+
+/* BOTTOM → TOP */
+.to-top {
+  transform: translate(-40px, -180px) scale(0.85);
+  opacity: 0.8;
+  z-index: 2;
+}
+
+.bg-hero{
+background-color: #B8D779;
+}
+
+
+/* SECTION VIRAL */
+.viral-wrapper{
+background:#89AFC7;
+position:relative;
+padding-top:80px;
+padding-bottom:80px;
+}
+
+/* LABEL PUTIH */
+.viral-label{
+position:absolute;
+top:-28px;
+left:50%;
+transform:translateX(-50%);
+}
+
+/* CARD */
+.viral-card{
+border-radius:14px;
+overflow:hidden;
+cursor:pointer;
+transition:0.3s;
+}
+
+.viral-card:hover{
+transform:scale(1.05);
+}
+
+/* JUDUL DI GAMBAR */
+.card-title{
+position:absolute;
+bottom:10px;
+left:10px;
+color:white;
+font-weight:600;
+background:rgba(0,0,0,0.5);
+padding:4px 10px;
+border-radius:6px;
+}
+
+
+/* SECTION REKOMENDASI */
+
+.recommend-wrapper{
+background:#A8C66C;
+padding:80px 0;
+}
+
+.recommend-title{
+color:white;
+font-size:22px;
+margin-bottom:30px;
+font-weight:500;
+}
+
+.recommend-card{
+border-radius:14px;
+overflow:hidden;
+cursor:pointer;
+transition:0.3s;
+}
+
+.recommend-card:hover{
+transform:scale(1.05);
+}
+
+.info-row{
+display:flex;
+align-items:center;
+gap:10px;
+margin-bottom:16px;
+}
+
+.rating-btn{
+background: linear-gradient(90deg,#d6ff00,#001a9e);
+color:white;
+border-radius:20px;
+font-weight:500;
+}
+.rating-wrapper{
+display:flex;
+flex-direction:column;
+align-items:center;
+margin-bottom:20px;
+}
+.rating-mode{
+display:flex;
+flex-direction:column;
+align-items:center;
+justify-content:center;
+height:100%;
+}
+
+.map-link{
+color:#1976d2;
+text-decoration:none;
+}
+
+.map-link:hover{
+text-decoration:underline;
+}

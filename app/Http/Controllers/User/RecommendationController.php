@@ -4,9 +4,9 @@ namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
-use Inertia\Inertia;
 use App\Models\TouristSpot;
-use App\Models\Category;
+use App\Models\ViralTouristSpot;
+use Inertia\Inertia;
 
 class RecommendationController extends Controller
 {
@@ -14,16 +14,23 @@ class RecommendationController extends Controller
     {
         $user = Auth::user();
 
-        // ambil category yang dipilih user
-        $categoryIds = $user->categories->pluck('id');
+        $categories = $user->categories->pluck('id');
 
-        // ambil wisata berdasarkan kategori tersebut
-        $spots = TouristSpot::whereIn('category_id', $categoryIds)
-            ->with('category')
+        // CONTENT BASED FILTERING
+        $recommendedSpots = TouristSpot::whereIn('category_id', $categories)
+            ->inRandomOrder()
+            ->take(3)
             ->get();
 
-        return Inertia::render('User/Recommendation', [
-            'spots' => $spots
+
+        // VIRAL SPOTS
+       $viralSpots = ViralTouristSpot::with('touristSpot')
+            ->orderBy('position')
+            ->get();
+
+        return Inertia::render('User/Dashboard', [
+            'recommendedSpots' => $recommendedSpots,
+            'viralSpots' => $viralSpots
         ]);
     }
 }

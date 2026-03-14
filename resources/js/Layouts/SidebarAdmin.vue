@@ -34,8 +34,8 @@
 
       <v-list-item
         prepend-icon="mdi-tag"
-        title="Kategori"
-        href="/admin/categories"
+        title="Wisata Viral"
+        href="/admin/viral"
       />
 
       <v-list-item

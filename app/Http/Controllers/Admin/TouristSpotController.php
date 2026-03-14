@@ -16,7 +16,7 @@ class TouristSpotController extends Controller
     public function index()
     {
         return Inertia::render('Admin/TouristSpot/Index', [
-            'spots' => TouristSpot::latest()->get()
+            'spots' => TouristSpot::with('category')->latest()->get()
         ]);
     }
 

@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Category;
+use App\Models\ViralTouristSpot;
 
 class TouristSpot extends Model
 {
@@ -25,5 +26,10 @@ class TouristSpot extends Model
     public function category()
     {
         return $this->belongsTo(Category::class);
+    }
+
+        public function viral()
+    {
+        return $this->hasOne(ViralTouristSpot::class);
     }
 }
